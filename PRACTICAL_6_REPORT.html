@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PRACTICAL NO. 6 Report - Web Technology</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+    body {
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #111;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header-section {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .header-section h1 {
+      font-size: 18pt;
+      font-weight: bold;
+      margin-bottom: 8pt;
+      letter-spacing: 0.5px;
+    }
+    .header-section h2 {
+      font-size: 14pt;
+      font-weight: bold;
+      margin-bottom: 15pt;
+    }
+    .meta-info {
+      text-align: left;
+      margin: 0 auto 20px auto;
+      font-size: 11pt;
+      line-height: 1.5;
+    }
+    .meta-info p {
+      margin: 3px 0;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #777;
+      margin: 20px 0;
+    }
+    h2.section-title {
+      font-size: 14pt;
+      font-weight: bold;
+      margin-top: 25px;
+      margin-bottom: 10px;
+      color: #000;
+    }
+    h3.sub-title {
+      font-size: 12pt;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 6px;
+    }
+    p {
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+    ul {
+      margin-top: 5px;
+      margin-bottom: 12px;
+      padding-left: 22px;
+    }
+    li {
+      margin-bottom: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 10pt;
+    }
+    th, td {
+      border: 1px solid #aaa;
+      padding: 7px 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    .screenshot-box {
+      border: 1px dashed #888;
+      background-color: #fafafa;
+      padding: 30px 15px;
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      margin: 15px 0 5px 0;
+      border-radius: 4px;
+    }
+    .caption {
+      text-align: center;
+      font-style: italic;
+      font-size: 10pt;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      background-color: #f4f4f4;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 10pt;
+    }
+    pre {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      font-size: 9.5pt;
+      line-height: 1.4;
+      margin: 10px 0;
+    }
+    .page-break {
+      page-break-after: always;
+    }
+    @media print {
+      body { padding: 0; }
+      .page-break { page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: TITLE & OBJECTIVES -->
+  <div class="header-section">
+    <h1>PRACTICAL NO. 6</h1>
+    <h2>Back-End Web Development: RESTful API with Database</h2>
+  </div>
+
+  <div class="meta-info">
+    <p><strong>Project Title:</strong> Student Records RESTful API Management System</p>
+    <p><strong>Submitted by:</strong> Krish Jagannath Adate</p>
+    <p><strong>Course:</strong> B.Tech in Software Engineering</p>
+    <p><strong>College:</strong> MIT Academy of Engineering, Alandi, Pune</p>
+    <p><strong>Subject:</strong> Web Technology</p>
+    <p><strong>Academic Year:</strong> 2026-27</p>
+    <p><strong>PRN:</strong> 202401100031</p>
+  </div>
+
+  <hr>
+
+  <h2 class="section-title">1. Aim</h2>
+  <p>To develop a RESTful API using Node.js and Express.js connected to a database, implement complete Create, Read, Update, and Delete (CRUD) operations, deploy the application on a cloud web hosting platform, and verify all API endpoints using Postman.</p>
+
+  <h2 class="section-title">2. Objectives</h2>
+  <ul>
+    <li>To design and build a RESTful API using Node.js and Express.js adhering to standard HTTP methods.</li>
+    <li>To connect the application to a MongoDB database using Mongoose ODM with schema validation constraints.</li>
+    <li>To implement complete CRUD operations:
+      <ul>
+        <li>Create new student records using <code>POST</code>.</li>
+        <li>Retrieve all or individual student records using <code>GET</code>.</li>
+        <li>Update existing student records using <code>PUT</code>.</li>
+        <li>Delete student records from the database using <code>DELETE</code>.</li>
+      </ul>
+    </li>
+    <li>To test and verify all API endpoints locally and in production using Postman.</li>
+    <li>To deploy the application to a web hosting provider (Render) and make it accessible through a public URL.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 2: PROBLEM STATEMENT, TECHNOLOGIES & SYSTEM IMPLEMENTATION -->
+  <h2 class="section-title">3. Problem Statement</h2>
+  <p>Student registration and record management systems require accurate, persistent data handling from users and client applications. Direct database access from client applications introduces security vulnerabilities, lack of validation, and tight coupling.</p>
+  <p>The <strong>Student Records RESTful API Management System</strong> provides an independent, scalable back-end web service that validates user input, prevents duplicate roll numbers and emails, performs database CRUD operations, and returns standardized HTTP status codes and JSON responses.</p>
+
+  <h2 class="section-title">4. Technologies Used</h2>
+  <ul>
+    <li><strong>Node.js:</strong> Asynchronous, event-driven JavaScript runtime environment for executing back-end logic.</li>
+    <li><strong>Express.js:</strong> Fast, unopinionated minimalist web framework used for routing, middleware, and request/response handling.</li>
+    <li><strong>MongoDB &amp; Mongoose:</strong> Document-based NoSQL database and Object Data Modeling (ODM) library providing schema structure, field validation, and query execution.</li>
+    <li><strong>Postman:</strong> API testing and documentation platform used to design and execute automated HTTP requests.</li>
+    <li><strong>VS Code:</strong> Integrated Development Environment used for coding, debugging, and terminal operations.</li>
+    <li><strong>Git and GitHub:</strong> Manage and host the project source code with version control.</li>
+    <li><strong>Render:</strong> Cloud web hosting provider used to deploy the web service with environment variables.</li>
+  </ul>
+
+  <h2 class="section-title">5. System Implementation</h2>
+
+  <h3 class="sub-title">5.1 RESTful API Architecture &amp; Endpoints</h3>
+  <p>The system adheres to standard REST architecture, using stateless HTTP communication and returning structured JSON payloads.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Endpoint</th>
+        <th>Description</th>
+        <th>Status Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>GET</code></td>
+        <td><code>/api/health</code></td>
+        <td>Service health and MongoDB connection status</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code>POST</code></td>
+        <td><code>/api/students</code></td>
+        <td>Create a new student record in database</td>
+        <td>201 Created / 400 / 409</td>
+      </tr>
+      <tr>
+        <td><code>GET</code></td>
+        <td><code>/api/students</code></td>
+        <td>Retrieve all student records from database</td>
+        <td>200 OK</td>
+      </tr>
+      <tr>
+        <td><code>GET</code></td>
+        <td><code>/api/students/:id</code></td>
+        <td>Retrieve a single student by ObjectId or Roll Number</td>
+        <td>200 OK / 404 Not Found</td>
+      </tr>
+      <tr>
+        <td><code>PUT</code></td>
+        <td><code>/api/students/:id</code></td>
+        <td>Update an existing student record</td>
+        <td>200 OK / 400 / 404</td>
+      </tr>
+      <tr>
+        <td><code>DELETE</code></td>
+        <td><code>/api/students/:id</code></td>
+        <td>Delete a student record from database</td>
+        <td>200 OK / 404 Not Found</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub-title">5.2 Database Model &amp; Validation</h3>
+  <p>The student entity is defined in <code>models/Student.js</code> using Mongoose Schema with strict validation constraints:</p>
+  <ul>
+    <li><code>name</code>: Required string, trimmed.</li>
+    <li><code>rollNo</code>: Required uppercase string, unique index to avoid duplication.</li>
+    <li><code>email</code>: Required lowercase string, validated via regular expression, unique index.</li>
+    <li><code>course</code>: Department/major with default value.</li>
+    <li><code>gpa</code>: Number constrained between 0.0 and 10.0.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 3: CRUD LOGIC & CODE STRUCTURE -->
+  <h3 class="sub-title">5.3 Controller Logic &amp; CRUD Operations</h3>
+  <p>The application logic is partitioned into dedicated controller functions in <code>controllers/studentController.js</code>:</p>
+  <ul>
+    <li><strong>createStudent:</strong> Validates payload attributes, checks existing records for duplicate roll number or email (returning <code>409 Conflict</code>), and creates the record returning <code>201 Created</code>.</li>
+    <li><strong>getAllStudents:</strong> Fetches all student documents from the database, supporting optional search and filtering queries.</li>
+    <li><strong>getStudentById:</strong> Performs lookup by either 24-character hexadecimal MongoDB ObjectId or roll number.</li>
+    <li><strong>updateStudent:</strong> Modifies existing student details with validator enforcement.</li>
+    <li><strong>deleteStudent:</strong> Removes the document from the database and confirms deletion.</li>
+  </ul>
+
+  <h3 class="sub-title">5.4 Application Structure and Code Organisation</h3>
+  <p>The project follows the Model-View-Controller (MVC) pattern, separating routing, business logic, data models, and static views.</p>
+
+  <div class="screenshot-box">
+    [INSERT SCREENSHOT 1: VS Code showing Explorer folder structure and server.js running in integrated terminal]
+  </div>
+  <p class="caption">Figure 1: Application structure and server execution in Visual Studio Code.</p>
+
+  <h2 class="section-title">6. Testing and Results</h2>
+  <p>All CRUD operations were verified using Postman and the automated test runner:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Test case</th>
+        <th>Input or action</th>
+        <th>Expected result</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Health check</td>
+        <td>GET /api/health</td>
+        <td>Status 200 OK with server uptime</td>
+        <td><strong>Pass</strong></td>
+      </tr>
+      <tr>
+        <td>Create student</td>
+        <td>POST /api/students with valid student payload</td>
+        <td>Status 201 Created with record ID</td>
+        <td><strong>Pass</strong></td>
+      </tr>
+      <tr>
+        <td>Duplicate roll number</td>
+        <td>POST /api/students with duplicate roll number</td>
+        <td>Status 409 Conflict error message</td>
+        <td><strong>Pass</strong></td>
+      </tr>
+      <tr>
+        <td>Retrieve all students</td>
+        <td>GET /api/students</td>
+        <td>Status 200 OK with array of records</td>
+        <td><strong>Pass</strong></td>
+      </tr>
+      <tr>
+        <td>Retrieve by ID</td>
+        <td>GET /api/students/:id</td>
+        <td>Status 200 OK with matched record</td>
+        <td><strong>Pass</strong></td>
+      </tr>
+      <tr>
+        <td>Update student record</td>
+        <td>PUT /api/students/:id with updated GPA and course</td>
+        <td>Status 200 OK with updated values</td>
+        <td><strong>Pass</strong></td>
+      </tr>
+      <tr>
+        <td>Delete student record</td>
+        <td>DELETE /api/students/:id</td>
+        <td>Status 200 OK with delete confirmation</td>
+        <td><strong>Pass</strong></td>
+      </tr>
+      <tr>
+        <td>Verify record deletion</td>
+        <td>GET /api/students/:id (after deletion)</td>
+        <td>Status 404 Not Found error</td>
+        <td><strong>Pass</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Result:</strong> The application was tested with valid and invalid inputs across all endpoints. The validation, database persistence, and HTTP status codes behaved as expected.</p>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 4: POSTMAN SCREENSHOTS -->
+  <h3 class="sub-title">6.1 Postman Endpoint Verification Screenshots</h3>
+
+  <div class="screenshot-box">
+    [INSERT SCREENSHOT 2: Postman showing POST /api/students request body and Status 201 Created]
+  </div>
+  <p class="caption">Figure 2: Creating a new student record using POST request in Postman.</p>
+
+  <div class="screenshot-box">
+    [INSERT SCREENSHOT 3: Postman showing GET /api/students retrieving all records with Status 200 OK]
+  </div>
+  <p class="caption">Figure 3: Retrieving all student records from database using GET request.</p>
+
+  <div class="screenshot-box">
+    [INSERT SCREENSHOT 4: Postman showing PUT /api/students/:id updating GPA with Status 200 OK]
+  </div>
+  <p class="caption">Figure 4: Updating an existing student record using PUT request in Postman.</p>
+
+  <div class="screenshot-box">
+    [INSERT SCREENSHOT 5: Postman showing DELETE /api/students/:id and 404 verification]
+  </div>
+  <p class="caption">Figure 5: Deleting a student record and verifying 404 Not Found in Postman.</p>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 5: GITHUB, DEPLOYMENT, CONCLUSION, LEARNING OUTCOMES -->
+  <h2 class="section-title">7. GitHub Repository</h2>
+  <p>The source code is maintained and version-controlled in a GitHub repository.</p>
+  <p><strong>Repository URL:</strong> <a href="https://github.com/krishneess/Web_tech_pr6">https://github.com/krishneess/Web_tech_pr6</a></p>
+
+  <div class="screenshot-box">
+    [INSERT SCREENSHOT 6: GitHub repository page showing project commits and file tree]
+  </div>
+  <p class="caption">Figure 6: Project source code hosted on GitHub.</p>
+
+  <h2 class="section-title">8. Deployment</h2>
+  <p>The application was deployed to the <strong>Render</strong> cloud hosting platform and is accessible through the following public URL.</p>
+  <p><strong>Live Application:</strong> <a href="https://student-records-api.onrender.com">https://student-records-api.onrender.com</a></p>
+
+  <div class="screenshot-box">
+    [INSERT SCREENSHOT 7: Deployed RESTful API web dashboard running live on Render]
+  </div>
+  <p class="caption">Figure 7: Deployed Student Records RESTful API on Render.</p>
+
+  <h2 class="section-title">9. Conclusion</h2>
+  <p>The Student Records RESTful API application was developed successfully using Node.js, Express.js, and MongoDB. It demonstrates stateless HTTP communication, schema validation, structured error handling, and complete CRUD operations. The application was version-controlled using Git, hosted on GitHub, deployed on Render, and verified using Postman.</p>
+
+  <h2 class="section-title">10. Learning Outcomes</h2>
+  <ul>
+    <li>Understood the fundamentals of RESTful API architecture and HTTP status codes.</li>
+    <li>Practised back-end server creation and routing using Express.js.</li>
+    <li>Implemented database modeling, constraints, and validation using Mongoose ODM.</li>
+    <li>Organised application logic into separate routes, controllers, and models.</li>
+    <li>Learned how to test and verify RESTful APIs using Postman collections.</li>
+    <li>Learned how to manage source code using Git and GitHub.</li>
+    <li>Deployed a back-end web application with cloud hosting on Render.</li>
+  </ul>
+
+</body>
+</html>
